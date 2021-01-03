@@ -1,0 +1,22 @@
+.header {
+    grid-area: h;
+    background-color: #b4faa0;
+    width: 100%;
+    margin: auto;
+    padding: 10px;
+}
+
+.item a {
+    color: gray;
+    text-decoration: none;
+    display: block;
+    padding: 8px 16px;
+
+    border-radius: 50px;
+}
+
+.item a.active {
+    background-color: #b4faa0;
+    color: white;
+}
+

@@ -1,0 +1,18 @@
+.app-wrapper {
+    margin: 0 auto;
+
+    width: 100%;
+
+
+    /* grid-gap: 10px; */
+    font-family: sans-serif;
+    background-color: #b4faa0;
+}
+
+.app-wrapper-content {
+    grid-area: c;
+
+
+}
+
+/* Style the navigation bar */
