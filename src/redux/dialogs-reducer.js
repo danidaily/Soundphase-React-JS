@@ -15,9 +15,9 @@ export const updateNewMessageBodyCreator = (text) => ({
 let initialState = {
     dialogs: [
         {id: 1, name: "Dani"},
-        {id: 2, name: "Kike"},
-        {id: 3, name: "Alberto"},
-        {id: 4, name: "Roma"},
+        {id: 2, name: "Roma"},
+        {id: 3, name: "Julia"},
+        {id: 4, name: "Alberto"},
         {id: 5, name: "Ivan"}
     ], //массив
     messages: [

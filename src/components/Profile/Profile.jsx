@@ -4,9 +4,10 @@ import ProfileInfo from "./ProfileInfo/ProfileInfo";
 import MyPostsContainer from "./MyPosts/MyPostsContainer";
 
 const Profile = (props) => {
+
     return (
         <div className={s.profile}>
-            <div className={s.info}><ProfileInfo/></div>
+            <div className={s.info}><ProfileInfo profile={props.profile}/></div>
             <div className={s.posts}>
                 <MyPostsContainer store={props.store}
 

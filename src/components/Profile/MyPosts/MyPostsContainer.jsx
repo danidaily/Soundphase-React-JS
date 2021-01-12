@@ -1,8 +1,8 @@
 import React from "react";
-import {addPostActionCreator, updateNewPostTextActionCreator} from "../../../redux/profile-reducer";
+import {addPost, updateNewPostText} from "../../../redux/profile-reducer";
 import MyPosts from "./MyPosts";
 import {connect} from "react-redux";
-import {toLikeAC, toDislikeAC} from "../../../redux/profile-reducer";
+import {toLike, toDislike} from "../../../redux/profile-reducer";
 
 
 /*Контейнерная компонента содержит данные о redux/state, чтобы не захламлять функциональную компоненту
@@ -45,21 +45,10 @@ let mapStateToProps = (state) => {
         newPostText: state.profilePage.newPostText
     }
 }
-let mapDispatchToProps = (dispatch) => {
-    return {
-        updateNewPostText: (text) => {
-            dispatch(updateNewPostTextActionCreator(text))
 
-        },
-        addPost: () => {
-            dispatch(addPostActionCreator())
-
-        }
-
-
-    }
-}
-const MyPostsContainer = connect(mapStateToProps, mapDispatchToProps)(MyPosts);
+const MyPostsContainer = connect(mapStateToProps, {
+    updateNewPostText, addPost
+})(MyPosts);
 //У connect есть локальный subscribe
 
 export default MyPostsContainer;

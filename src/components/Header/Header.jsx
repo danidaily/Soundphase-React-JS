@@ -41,7 +41,8 @@ const Header = (props) => {
                                      placeholder="Search"
                                      className="mr-sm-2"/>
                         <Button variant="outline-info"> Search </Button>
-
+                        <Button variant="outline-info">
+                            {props.isAuth ? props.login : <NavLink to="/login"> Login </NavLink>} </Button>
 
                     </Form>
                 </Navbar.Collapse>

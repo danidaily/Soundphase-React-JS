@@ -1,6 +1,9 @@
 import React from "react";
 import styles from "./Users.module.css";
 import userPhoto from "../../Assets/photo.png";
+import {NavLink} from "react-router-dom";
+import * as axios from "axios";
+import {deleteUsers, getUsers, postUsers} from "../../API/api";
 
 let Users = (props) => {
     let pagesCount = Math.ceil(props.totalUsersCount / props.pageSize); //получаем количество страниц,
@@ -14,14 +17,14 @@ let Users = (props) => {
 
             <div>
                 {pages.map(p => {
-                return <span className=
-                                 {props.currentPage === p && styles.selectedPage}
-                             onClick={(event) => {
-                                 props.onPageChanged(p)
-                             }}>
+                    return <span className=
+                                     {props.currentPage === p && styles.selectedPage}
+                                 onClick={(event) => {
+                                     props.onPageChanged(p)
+                                 }}>
                         {p}
                     </span>
-            })}
+                })}
             </div>
 
 
@@ -29,33 +32,63 @@ let Users = (props) => {
                 props.users.map(u => <div key={u.id}>
         <span>
             <div>
-                        <img src={u.photos.small != null ? u.photos.small : userPhoto} className={styles.userPhoto}/>
+                        <NavLink to={'/profile/' + u.id}><img src={u.photos.small != null ? u.photos.small : userPhoto}
+                                                              className={styles.userPhoto}/></NavLink>
             </div>
             <div>
-                {u.isFollowed ? <button onClick={() => {
+                {u.isFollowed ? <button disabled={props.followingInProgress.some(id => id === u.id)} onClick={() => {
+                        props.toggleFollowingProgress(true, u.id);
+                        axios.delete(`https://social-network.samuraijs.com/api/1.0/follow/${u.id}`, {
+                            withCredentials: true,
+                            headers: {
+                                "API-KEY": "003349ef-7a6d-49ce-a4aa-a4681e22169c"
+                            }
+                        })
+                            .then(response => {
+                                if (response.data.resultCode == 0) {
+                                    props.unfollow(u.id)
+                                }
+                                props.toggleFollowingProgress(false, u.id);
 
-                        props.unfollow(u.id)
+                            });
+
                     }}> Unfollow </button>
-                    : <button onClick={() => {
-                        props.follow(u.id)
-                    }}> Follow </button>}
-            </div>
-        </span>
+                    : <button
+                        disabled={props.followingInProgress.some(id => id === u.id)} //если followingInProgress == true, то задезейблим кнопку
+                        onClick={() => {
+                            props.toggleFollowingProgress(true, u.id);
+                            axios.post(`https://social-network.samuraijs.com/api/1.0/follow/${u.id}`, {}, {
+                                withCredentials: true,
+                                headers: {
+                                    "API-KEY": "003349ef-7a6d-49ce-a4aa-a4681e22169c"
+                                }
+                            })
+                                .then(response => {
+                                    if (response.data.resultCode == 0) {
+                                        props.follow(u.id)
+                                    }
+                                    props.toggleFollowingProgress(false, u.id);
+
+                                });
+
+                        }}> Follow </button>}
+                    </div>
+                    </span>
                     <span>
-            <span>
-                <div>{u.name}</div>
-                <div>{u.status}</div>
-            </span>
-            <span>
-                <div>
+                    <span>
+                    <div>{u.name}</div>
+                    <div>{u.status}</div>
+                    </span>
+                    <span>
+                    <div>
                     {u.country}
-                </div>
-                <div>
+                    </div>
+                    <div>
                     {u.city}
 
-            </div>
-            </span>
-        </span>
+                    </div>
+                    </span>
+                    </span>
                 </div>)
             }
 

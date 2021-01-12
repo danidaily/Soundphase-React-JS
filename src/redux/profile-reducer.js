@@ -4,6 +4,7 @@ const ADD_POST = "ADD-POST";
 const UPDATE_NEW_POST_TEXT = "UPDATE-NEW-POST-TEXT";
 const LIKE = "LIKE"
 const DISLIKE = "DISLIKE"
+const SET_USER_PROFILE = "SET-USER-PROFILE"
 
 let likes = Math.round(Math.random() * 100);
 
@@ -15,7 +16,8 @@ let initialState = {
         {id: 3, message: "Bienvenido", likesCount: likes, isLiked: false},
         {id: 4, message: "Nene", likesCount: likes, isLiked: false}
     ],
-    newPostText: "What's on your mind?"
+    newPostText: "What's on your mind?",
+    profile: null
 }
 //profileReducer получает state и action, меняет и выдает новый state
 //значение по умолчанию, если ничего не передается в пропсах: state = initialState
@@ -84,6 +86,13 @@ const profileReducer = (state = initialState, action) => {
                 })
             }
         }
+        case SET_USER_PROFILE: {
+            return {
+                ...state,
+                //возвращаем копию состояния (стейт), где поменяем profile
+                profile: action.profile
+            }
+        }
         default:
             return state;
 
@@ -94,18 +103,24 @@ const profileReducer = (state = initialState, action) => {
 }
 
 
-export const addPostActionCreator = () => ({type: ADD_POST}); //actionCreator создает и возвращает action
-export const updateNewPostTextActionCreator = (text) => ({
+export const addPost = () => ({type: ADD_POST}); //actionCreator создает и возвращает action
+export const updateNewPostText = (text) => ({
         type: "UPDATE-NEW-POST-TEXT",
         newText: text
     }
 
 );
 //action для лайка
-export const toLikeAC = (userId) => ({type: LIKE, userId}); //followAC - followActionCreator
+export const toLike = (userId) => ({type: LIKE, userId}); //followAC - followActionCreator
 //action для отмены лайка
-export const toDislikeAC = (userId) => ({
+export const toDislike = (userId) => ({
         type: DISLIKE, userId
+
+    }
+
+);
+export const setUserProfile = (profile) => ({
+        type: SET_USER_PROFILE, profile
 
     }
 
