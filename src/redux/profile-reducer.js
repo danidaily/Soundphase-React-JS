@@ -1,5 +1,7 @@
 /*Reducer - это функция которая принимает state/action,
 меняет и возвращает новый state*/
+import {usersAPI} from "../API/api";
+
 const ADD_POST = "ADD-POST";
 const UPDATE_NEW_POST_TEXT = "UPDATE-NEW-POST-TEXT";
 const LIKE = "LIKE"
@@ -125,4 +127,12 @@ export const setUserProfile = (profile) => ({
     }
 
 );
+export const getUserProfile = (userId) => (dispatch) => {
+    usersAPI.getProfile(userId).then(response => {
+        dispatch(setUserProfile(response.data));
+        //this.props.setTotalUsersCount(response.data.totalCount); //получаем кол-во всех пользователей с сервера
+
+    });
+};//thunk принимает dispatch и произвоит асинхронные операции
+
 export default profileReducer;

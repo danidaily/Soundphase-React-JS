@@ -3,7 +3,7 @@ import styles from "./Users.module.css";
 import userPhoto from "../../Assets/photo.png";
 import {NavLink} from "react-router-dom";
 import * as axios from "axios";
-import {deleteUsers, getUsers, postUsers} from "../../API/api";
+import {deleteUsers, getUsers, postUsers, usersAPI} from "../../API/api";
 
 let Users = (props) => {
     let pagesCount = Math.ceil(props.totalUsersCount / props.pageSize); //получаем количество страниц,
@@ -37,39 +37,14 @@ let Users = (props) => {
             </div>
             <div>
                 {u.isFollowed ? <button disabled={props.followingInProgress.some(id => id === u.id)} onClick={() => {
-                        props.toggleFollowingProgress(true, u.id);
-                        axios.delete(`https://social-network.samuraijs.com/api/1.0/follow/${u.id}`, {
-                            withCredentials: true,
-                            headers: {
-                                "API-KEY": "003349ef-7a6d-49ce-a4aa-a4681e22169c"
-                            }
-                        })
-                            .then(response => {
-                                if (response.data.resultCode == 0) {
-                                    props.unfollow(u.id)
-                                }
-                                props.toggleFollowingProgress(false, u.id);
+                        props.follow(u.id); //применяем thunk из users-reducer
 
-                            });
 
                     }}> Unfollow </button>
                     : <button
                         disabled={props.followingInProgress.some(id => id === u.id)} //если followingInProgress == true, то задезейблим кнопку
                         onClick={() => {
-                            props.toggleFollowingProgress(true, u.id);
-                            axios.post(`https://social-network.samuraijs.com/api/1.0/follow/${u.id}`, {}, {
-                                withCredentials: true,
-                                headers: {
-                                    "API-KEY": "003349ef-7a6d-49ce-a4aa-a4681e22169c"
-                                }
-                            })
-                                .then(response => {
-                                    if (response.data.resultCode == 0) {
-                                        props.follow(u.id)
-                                    }
-                                    props.toggleFollowingProgress(false, u.id);
-
-                                });
+                            props.unfollow(u.id);//применяем thunk из users-reducer
 
                         }}> Follow </button>}
                     </div>

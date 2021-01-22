@@ -2,7 +2,7 @@ import React from 'react';
 import s from "./Header.module.css"
 import {Navbar, Nav, Container, Button, Form, FormControl} from "react-bootstrap";
 import logo from "./sound.png"
-import {NavLink, Route} from "react-router-dom";
+import {NavLink} from "react-router-dom";
 
 const Header = (props) => {
 

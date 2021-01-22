@@ -1,6 +1,8 @@
 /*Reducer - это функция которая принимает state/action,
 меняет и возвращает новый state*/
 
+import {authAPI} from "../API/api";
+
 const SET_USER_DATA = "SET-USER-DATA";
 
 
@@ -30,5 +32,15 @@ const authReducer = (state = initialState, action) => {
 
 // data: {userId, email, login} - объект data
 export const setAuthUserData = (userId, email, login) => ({type: SET_USER_DATA, data: {userId, email, login}}); //возвращает action (действие)
+export const getAuthUserData = () => (dispatch) => {
+    authAPI.me().then(response => { //подписка на promise
 
+        if (response.data.resultCode === 0) {
+            let {userId, email, login} = response.data.data;
+            dispatch(setAuthUserData(userId, email, login)); //data - свойство axios, второй data - свойство API, с которого получаем данные
+
+        }
+
+    });
+}
 export default authReducer;
